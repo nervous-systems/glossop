@@ -1,4 +1,5 @@
-(ns glossop)
+(ns glossop
+  (:require [clojure.core.async :as async]))
 
 (defn mapkv [kf vf m]
   (into {} (map (fn [[k v]] [(kf k) (vf v)]) m)))
@@ -13,18 +14,6 @@
 (defmacro fn->>      [& forms] `(fn [x#] (->> x# ~@forms)))
 (defmacro fn-some->  [& forms] `(fn [x#] (some-> x# ~@forms)))
 (defmacro fn-some->> [& forms] `(fn [x#] (some->> x# ~@forms)))
-
-(defmacro defn-> [name & forms]
-  `(def ~name (fn-> ~@forms)))
-
-(defmacro defn->> [name & forms]
-  `(def ~name (fn->> ~@forms)))
-
-(defmacro defn-some-> [name & forms]
-  `(def ~name (fn-some-> & forms)))
-
-(defmacro defn-some->> [name & forms]
-  `(def ~name (fn-some->> & forms)))
 
 (defn- when-not-pred-fn [p]
   #(when-not (p %)
