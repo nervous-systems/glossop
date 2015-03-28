@@ -1,6 +1,7 @@
 (ns glossop
   (:require [clojure.core.async :as async]))
 
+;; There's very similar junk in plumbing, revise
 (defn mapkv [kf vf m]
   (into {} (map (fn [[k v]] [(kf k) (vf v)]) m)))
 
@@ -10,6 +11,7 @@
 (defn mapvals [f m]
   (mapkv identity f m))
 
+;; Again
 (defmacro fn->       [& forms] `(fn [x#] (-> x# ~@forms)))
 (defmacro fn->>      [& forms] `(fn [x#] (->> x# ~@forms)))
 (defmacro fn-some->  [& forms] `(fn [x#] (some-> x# ~@forms)))
@@ -25,7 +27,7 @@
 (defn stringy? [x]
   (or (string? x) (keyword? x)))
 
-(defn- throw-err [e]
+(defn throw-err [e]
   (when (instance? Throwable e)
     (throw e))
   e)
