@@ -52,6 +52,12 @@
        (catch Exception e#
          e#))))
 
+(defn close-with! [ch v]
+  (when v
+    (async/put! ch v))
+  (async/close! ch)
+  ch)
+
 ;; Taken from encore
 (defn fq-name "Like `name` but includes namespace in string when present."
   [x]
