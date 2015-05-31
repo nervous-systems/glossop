@@ -1,4 +1,4 @@
-(defproject io.nervous/glossop "0.1.0-SNAPSHOT"
+(defproject io.nervous/glossop "0.1.0"
   :description "Miscellaneous Clojure utilities"
   :url "https://github.com/nervous-systems/glossop"
   :license {:name "Unlicense" :url "http://unlicense.org/UNLICENSE"}
