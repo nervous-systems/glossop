@@ -41,3 +41,7 @@
          (when (async/>! ch (first vs))
            (recur (next vs)))
          true)))))
+
+(defn close-with! [ch v]
+  (async/put! ch v)
+  (async/close! ch))

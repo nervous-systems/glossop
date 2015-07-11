@@ -2,7 +2,8 @@
   (:require #?(:clj
                [clojure.core.async :as async]
                :cljs
-               [cljs.core.async :as async])))
+               [cljs.core.async :as async]))
+  #?(:cljs (:require-macros [cljs.core.async.macros])))
 
 (defn throw-err [e]
   (when (instance? #?(:clj Throwable :cljs js/Error) e)
@@ -10,14 +11,10 @@
   e)
 
 #?(:clj
-   (defmacro <? [ch]
-     `(throw-err (async/<! ~ch)))
-   :cljs
-   (defn <? [ch]
-     (throw-err (async/<! ch))))
-
-#?(:clj
    (do
+     (defmacro <? [ch]
+       `(throw-err (async/<! ~ch)))
+
      (defn <?! [ch]
        (throw-err (async/<!! ch)))
 
