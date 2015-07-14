@@ -1,15 +1,11 @@
 (ns glossop.util
   #?@(:clj
       ((:require [clojure.core.async :as async :refer [go]]
-                 [clojure.core.async.impl.protocols :as protocols]
                  [glossop.core :refer [<? go-catching]]))
       :cljs
-      ((:require [cljs.core.async :as async]
-                 [cljs.core.async.impl.protocols :as protocols])
+      ((:require [cljs.core.async :as async])
        (:require-macros [cljs.core.async.macros :refer [go]]
                         [glossop.macros :refer [<? go-catching]]))))
-
-(def chan? (partial satisfies? protocols/ReadPort))
 
 (defn keyed-merge
   "Merge a map of channel->opaque into a single channel containing a sequence of

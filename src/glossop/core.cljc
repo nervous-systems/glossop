@@ -1,12 +1,11 @@
 (ns glossop.core
-  (:require #?(:clj
-               [clojure.core.async :as async]
-               :cljs
-               [cljs.core.async :as async]))
-  #?(:cljs (:require-macros [cljs.core.async.macros])))
+  (:require #? (:clj
+                [clojure.core.async :as async]
+                :cljs
+                [cljs.core.async :as async])))
 
 (defn error? [e]
-  (instance? #?(:clj Throwable :cljs js/Error) e))
+  (instance? #? (:clj Throwable :cljs js/Error) e))
 
 (defn throw-err [e]
   (when (error? e)
