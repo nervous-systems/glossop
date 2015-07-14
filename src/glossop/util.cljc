@@ -1,13 +1,15 @@
 (ns glossop.util
-  (:refer-clojure :exclude [reduce into])
   #?@(:clj
       ((:require [clojure.core.async :as async :refer [go]]
+                 [clojure.core.async.impl.protocols :as protocols]
                  [glossop.core :refer [<? go-catching]]))
       :cljs
       ((:require [cljs.core.async :as async]
-                 [glossop.core :refer [<?]])
+                 [cljs.core.async.impl.protocols :as protocols])
        (:require-macros [cljs.core.async.macros :refer [go]]
-                        [glossop.macros :refer [go-catching]]))))
+                        [glossop.macros :refer [<? go-catching]]))))
+
+(def chan? (partial satisfies? protocols/ReadPort))
 
 (defn keyed-merge
   "Merge a map of channel->opaque into a single channel containing a sequence of
@@ -35,7 +37,7 @@
   resolve to a false value if the destination channel closes, or true if all
   puts are completed."
   ([ch coll]
-   (async/go
+   (go
      (loop [vs (seq coll)]
        (if vs
          (when (async/>! ch (first vs))

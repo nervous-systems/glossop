@@ -8,4 +8,4 @@
          e#))))
 
 (defmacro <? [x]
-  `(cljs.core.async/<! ~x))
+  `(glossop.core/throw-err (cljs.core.async/<! ~x)))

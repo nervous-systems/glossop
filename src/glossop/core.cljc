@@ -5,8 +5,11 @@
                [cljs.core.async :as async]))
   #?(:cljs (:require-macros [cljs.core.async.macros])))
 
+(defn error? [e]
+  (instance? #?(:clj Throwable :cljs js/Error) e))
+
 (defn throw-err [e]
-  (when (instance? #?(:clj Throwable :cljs js/Error) e)
+  (when (error? e)
     (throw e))
   e)
 
