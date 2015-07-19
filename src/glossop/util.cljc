@@ -4,7 +4,7 @@
             #? (:clj
                 [clojure.core.async :as async :refer [go]]
                 :cljs
-                [cljs.core.async :as async :refer [go]]))
+                [cljs.core.async :as async]))
   #? (:cljs
       (:require-macros [cljs.core.async.macros :refer [go]]
                        [glossop.macros :refer [<? go-catching]])))
