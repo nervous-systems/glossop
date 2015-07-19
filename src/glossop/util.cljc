@@ -1,11 +1,31 @@
 (ns glossop.util
-  #?@(:clj
-      ((:require [clojure.core.async :as async :refer [go]]
-                 [glossop.core :refer [<? go-catching]]))
-      :cljs
-      ((:require [cljs.core.async :as async])
-       (:require-macros [cljs.core.async.macros :refer [go]]
-                        [glossop.macros :refer [<? go-catching]]))))
+  (:refer-clojure :exclude [into reduce])
+  (:require [glossop.core :refer [throw-err #?@ (:clj [<? go-catching])]]
+            #? (:clj
+                [clojure.core.async :as async :refer [go]]
+                :cljs
+                [cljs.core.async :as async :refer [go]]))
+  #? (:cljs
+      (:require-macros [cljs.core.async.macros :refer [go]]
+                       [glossop.macros :refer [<? go-catching]])))
+
+;; TODO have these guys optionally combine errors, rather than stopping on the
+;; first
+
+(defn reduce
+  "async/reduce with short-circuiting on the first error"
+  [f init ch]
+  (go-catching
+    (loop [ret init]
+      (let [v (<? ch)]
+        (if (nil? v)
+          ret
+          (recur (f ret v)))))))
+
+(defn into
+  "async/into with short-circuiting on the first error"
+  [coll ch]
+  (reduce conj coll ch))
 
 (defn keyed-merge
   "Merge a map of channel->opaque into a single channel containing a sequence of
