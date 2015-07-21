@@ -5,6 +5,7 @@
      (try
        ~@body
        (catch js/Error e#
+         (.error js/console "Caught exception in (go) block" e# (.stack e#))
          e#))))
 
 (defmacro <? [x]

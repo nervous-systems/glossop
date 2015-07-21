@@ -25,4 +25,7 @@
           (try
             ~@body
             (catch Exception e#
+              (binding [*out* *err*]
+                (println "Caught exception in (go) block"))
+              (.printStackTrace ^Exception e#)
               e#))))))
