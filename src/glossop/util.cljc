@@ -1,13 +1,12 @@
 (ns glossop.util
   (:refer-clojure :exclude [into reduce])
-  (:require [glossop.core :refer [throw-err #?@ (:clj [<? go-catching])]]
+  (:require [glossop.core :as g]
             #? (:clj
                 [clojure.core.async :as async :refer [go]]
                 :cljs
                 [cljs.core.async :as async]))
   #? (:cljs
-      (:require-macros [cljs.core.async.macros :refer [go]]
-                       [glossop.macros :refer [<? go-catching]])))
+      (:require-macros [cljs.core.async.macros :refer [go]])))
 
 ;; TODO have these guys optionally combine errors, rather than stopping on the
 ;; first
@@ -15,9 +14,9 @@
 (defn reduce
   "async/reduce with short-circuiting on the first error"
   [f init ch]
-  (go-catching
+  (g/go-catching
     (loop [ret init]
-      (let [v (<? ch)]
+      (let [v (g/<? ch)]
         (if (nil? v)
           ret
           (recur (f ret v)))))))
