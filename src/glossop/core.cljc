@@ -29,15 +29,9 @@
              (try
                ~@body
                (catch js/Error e#
-                 (.error js/console
-                         "Possibly uncaught exception in (go) block"
-                         e# (aget e# "stack"))
                  e#)))
           `(async/go
              (try
                ~@body
                (catch Exception e#
-                 (binding [*out* *err*]
-                   (println "Possibly uncaught exception in (go) block"))
-                 (.printStackTrace ^Exception e#)
                  e#)))))))
