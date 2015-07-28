@@ -8,9 +8,6 @@
   #? (:cljs
       (:require-macros [cljs.core.async.macros :refer [go]])))
 
-;; TODO have these guys optionally combine errors, rather than stopping on the
-;; first
-
 (defn reduce
   "async/reduce with short-circuiting on the first error"
   [f init ch]
