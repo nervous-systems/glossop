@@ -1,5 +1,5 @@
 (ns glossop.util
-  (:refer-clojure :exclude [into reduce])
+  (:refer-clojure :exclude [into reduce concat])
   (:require [glossop.core :as g]
             #? (:clj
                 [clojure.core.async :as async :refer [go]]
@@ -34,13 +34,13 @@
    (let [out (async/chan buf-or-n)]
      (go
        (loop [cs (vec (keys ch->tag))]
-         (if (pos? (count cs))
+         (when (pos? (count cs))
            (let [[v c] (async/alts! cs)]
              (if (nil? v)
                (recur (filterv #(not= c %) cs))
                (do (async/>! out [(ch->tag c) v])
-                   (recur cs))))
-           (async/close! out))))
+                   (recur cs))))))
+       (async/close! out))
      out)))
 
 (defn onto-chan?
