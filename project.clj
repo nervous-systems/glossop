@@ -1,4 +1,4 @@
-(defproject io.nervous/glossop "0.2.0"
+(defproject io.nervous/glossop "0.2.1"
   :description "Miscellaneous Clojure utilities"
   :url "https://github.com/nervous-systems/glossop"
   :license {:name "Unlicense" :url "http://unlicense.org/UNLICENSE"}
@@ -9,7 +9,7 @@
   :source-paths ["src" "test"]
   :dependencies
   [[org.clojure/clojure    "1.7.0"]
-   [org.clojure/core.async "0.1.346.0-17112a-alpha"]
+   [org.clojure/core.async "0.2.371"]
    [org.clojure/clojurescript  "0.0-3308"]]
   :clean-targets ["target" "out"]
   :cljsbuild

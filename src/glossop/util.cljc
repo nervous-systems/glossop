@@ -13,10 +13,9 @@
   [f init ch]
   (g/go-catching
     (loop [ret init]
-      (let [v (g/<? ch)]
-        (if (nil? v)
-          ret
-          (recur (f ret v)))))))
+      (if-let [v (g/<? ch)]
+        (recur (f ret v))
+        ret))))
 
 (defn into
   "async/into with short-circuiting on the first error"
