@@ -1,12 +1,10 @@
 (ns glossop.util
   (:refer-clojure :exclude [into reduce concat])
   (:require [glossop.core :as g]
-            #? (:clj
-                [clojure.core.async :as async :refer [go]]
-                :cljs
-                [cljs.core.async :as async]))
-  #? (:cljs
-      (:require-macros [cljs.core.async.macros :refer [go]])))
+            #? (:clj  [clojure.core.async :as async :refer [go go-loop]]
+                :cljs [cljs.core.async :as async]))
+  #? (:cljs (:require-macros [cljs.core.async.macros :refer [go go-loop]]
+                             [glossop.util])))
 
 (defn reduce
   "async/reduce with short-circuiting on the first error"
@@ -59,3 +57,17 @@
 (defn close-with! [ch v]
   (async/put! ch v)
   (async/close! ch))
+
+(defn pipe
+  "Always close the from channel when the to channel closes"
+  ([from to] (pipe from to true))
+  ([from to close?]
+   (go-loop []
+    (let [v (async/<! from)]
+      (if (nil? v)
+        (when close?
+          (async/close! to))
+        (if (async/>! to v)
+          (recur)
+          (async/close! from)))))
+   to))
